@@ -15,7 +15,7 @@ angular.module('ui.directives').directive('uiCalendar',['ui.config', '$parse', f
      return {
         require: 'ngModel',
         restrict: 'A',
-          link: function(scope, elm, attrs, $timeout) {
+          link: function(scope, elm, attrs, $timeout) {            
             var sources = scope.$eval(attrs.ngModel);
             var tracker = 0;
             /* returns the length of all source arrays plus the length of eventSource itself */
@@ -59,7 +59,10 @@ angular.module('ui.directives').directive('uiCalendar',['ui.config', '$parse', f
               /* watches all eventSources */
               scope.$watch(getSources, function( newVal, oldVal )
               {
-                update();
+                scope.calendar.fullCalendar('removeEventSources');
+                for(var i in sources) {                  
+                  scope.calendar.fullCalendar('addEventSource', sources[i]);
+                }
               });
          }
     };
